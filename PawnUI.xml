@@ -76,7 +76,7 @@
 		<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
 		<Size><AbsDimension x="250" y="25" /></Size>
 	</FontString>
-	<FontString name="PawnUISmallCheckboxLabelTemplate" inherits="GameFontNormalSmall" virtual="true" justifyH="LEFT" justifyV="MIDDLE">
+	<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="...">
 		<Anchors><Anchor point="LEFT"><Offset><AbsDimension x="20" y="0" /></Offset></Anchor></Anchors>
 		<Size><AbsDimension x="160" y="20" /></Size>
 	</FontString>
@@ -1363,7 +1363,10 @@
 					<CheckButton name="PawnUIFrame_EnchantedValuesCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="-85" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_EnchantedValuesCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_EnchantedValuesCheck_Text">
+								<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+								<Size><AbsDimension x="250" y="25" /></Size>
+							</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_EnchantedValuesCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1448,7 +1451,10 @@
 					<CheckButton name="PawnUIFrame_UpgradeTrackingOffRadio" inherits="PawnUIRadioButtonTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="50" y="-400" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUIRadioButtonLabelTemplate" text="PawnUIFrame_UpgradeTrackingOffRadio_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_UpgradeTrackingOffRadio_Text">
+								<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+								<Size><AbsDimension x="225" y="15" /></Size>
+							</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick>PawnUIFrame_UpgradeTrackingList_SetSelection(false)</OnClick></Scripts>
 					</CheckButton>
