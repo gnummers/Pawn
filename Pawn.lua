@@ -2737,11 +2737,12 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 	local TotalSocketValue = 0
 	local ProperSocketValue = 0
 	local SocketBonusValue = 0
+	local UseActualSocketedGems = PawnCommon and PawnCommon.UseActualSocketedGems
 	local BasicSocketsCount = (Item.PrismaticSocket or 0) + (Item.RedSocket or 0) + (Item.YellowSocket or 0) + (Item.BlueSocket or 0)
 
 	if UseActualSocketedGems then
-		-- In this mode, Item.Stats already reflects the real inserted gems.
-		-- So do not add any synthetic "best gem" socket value.
+		-- The live/current item stats already include inserted gem stats.
+		-- So do not add any theoretical best-gem socket value.
 		TotalSocketValue = 0
 		ProperSocketValue = 0
 		SocketBonusValue = 0
@@ -2762,6 +2763,7 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 					end
 				end
 			end
+
 			if DebugMessages then
 				PawnDebugMessage(format(PawnLocal.SocketBonusValueCalculationMessage, SocketBonusValue))
 			end
@@ -2932,15 +2934,23 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 				end
 
 				-- Finally, meta sockets are just kind of their own separate thing.
-				TotalSocketValue = TotalSocketValue + SocketValue("MetaSocket", MetaGemQualityLevel)
-				ThisValue = ScaleValues.MetaSocketEffect
-				if ThisValue then
-					Stat = "MetaSocketEffect"
-					Quantity = Item[Stat]
-					if Quantity then
-						TotalSocketValue = TotalSocketValue + Quantity * ThisValue
-						if DebugMessages then PawnDebugMessage(format(PawnLocal.ValueCalculationMessage, Quantity, Stat, ThisValue, Quantity * ThisValue)) end
+				if not UseActualSocketedGems then
+					TotalSocketValue = TotalSocketValue + SocketValue("MetaSocket", MetaGemQualityLevel)
+
+					ThisValue = ScaleValues.MetaSocketEffect
+					if ThisValue then
+						Stat = "MetaSocketEffect"
+						Quantity = Item[Stat]
+						if Quantity then
+							TotalSocketValue = TotalSocketValue + Quantity * ThisValue
+							if DebugMessages then
+								PawnDebugMessage(format(PawnLocal.ValueCalculationMessage, Quantity, Stat, ThisValue, Quantity * ThisValue))
+							end
+						end
 					end
+
+					TotalSocketValue = TotalSocketValue + SocketValue("CogwheelSocket", CogwheelQualityLevel)
+					TotalSocketValue = TotalSocketValue + SocketValue("ShaTouchedSocket", CrystalOfFearQualityLevel)
 				end
 
 				-- In Cataclysm there are also cogwheels for engineering goggles. Sigh.
