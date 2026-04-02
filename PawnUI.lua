@@ -1952,6 +1952,7 @@ function PawnUIOptionsTabPage_OnShow()
 	PawnUIFrame_TooltipUpgradeList_UpdateSelection()
 	PawnUIFrame_ColorTooltipBorderCheck:SetChecked(PawnCommon.ColorTooltipBorder)
 	PawnUIFrame_EnchantedValuesCheck:SetChecked(PawnCommon.ShowEnchanted)
+	PawnUIFrame_UseActualSocketedGemsCheck:SetChecked(PawnCommon.UseActualSocketedGems)
 
 	-- Upgrade options
 	PawnUIFrame_IgnoreGemsWhileLevelingCheck:SetChecked(PawnCommon.IgnoreGemsWhileLeveling)
@@ -2061,6 +2062,14 @@ end
 
 function PawnUIFrame_IgnoreGemsWhileLevelingCheck_OnClick()
 	PawnCommon.IgnoreGemsWhileLeveling = PawnUIFrame_IgnoreGemsWhileLevelingCheck:GetChecked()
+	PawnClearCache()
+	PawnInvalidateBestItems()
+	PawnResetTooltips()
+	PawnResetBags()
+end
+
+function PawnUIFrame_UseActualSocketedGemsCheck_OnClick()
+	PawnCommon.UseActualSocketedGems = PawnUIFrame_UseActualSocketedGemsCheck:GetChecked()
 	PawnClearCache()
 	PawnInvalidateBestItems()
 	PawnResetTooltips()
