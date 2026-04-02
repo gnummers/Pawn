@@ -60,6 +60,11 @@ local PawnUIGemAreaPaddingBottom = 0 -- add no padding to the bottom of the scro
 
 local PawnUIFrameNeedsScaleSelector = { true, true, true, true, false, false, false }
 
+local function PawnTrace(Message)
+	if DEFAULT_CHAT_FRAME then
+		DEFAULT_CHAT_FRAME:AddMessage("|cff00ff98Pawn dbg:|r " .. tostring(Message))
+	end
+end
 
 ------------------------------------------------------------
 -- Inventory button
@@ -1944,6 +1949,8 @@ end
 
 -- When the Options tab is first shown, set the values of all of the controls based on the user's settings.
 function PawnUIOptionsTabPage_OnShow()
+	PawnTrace("PawnUIOptionsTabPage_OnShow enter")
+
 	-- Tooltip options
 	PawnUIFrame_ShowItemIDsCheck:SetChecked(PawnCommon.ShowItemID)
 	PawnUIFrame_ShowIconsCheck:SetChecked(PawnCommon.ShowTooltipIcons)
@@ -1952,7 +1959,13 @@ function PawnUIOptionsTabPage_OnShow()
 	PawnUIFrame_TooltipUpgradeList_UpdateSelection()
 	PawnUIFrame_ColorTooltipBorderCheck:SetChecked(PawnCommon.ColorTooltipBorder)
 	PawnUIFrame_EnchantedValuesCheck:SetChecked(PawnCommon.ShowEnchanted)
-	PawnUIFrame_UseActualSocketedGemsCheck:SetChecked(PawnCommon.UseActualSocketedGems)
+
+	if PawnUIFrame_UseActualSocketedGemsCheck then
+		PawnUIFrame_UseActualSocketedGemsCheck:SetChecked(PawnCommon.UseActualSocketedGems)
+		PawnTrace("UseActualSocketedGems checkbox found")
+	else
+		PawnTrace("Missing frame: PawnUIFrame_UseActualSocketedGemsCheck")
+	end
 
 	-- Upgrade options
 	PawnUIFrame_IgnoreGemsWhileLevelingCheck:SetChecked(PawnCommon.IgnoreGemsWhileLeveling)
@@ -2069,6 +2082,11 @@ function PawnUIFrame_IgnoreGemsWhileLevelingCheck_OnClick()
 end
 
 function PawnUIFrame_UseActualSocketedGemsCheck_OnClick()
+	if not PawnUIFrame_UseActualSocketedGemsCheck then
+		PawnTrace("UseActualSocketedGems click handler fired but frame is nil")
+		return
+	end
+
 	PawnCommon.UseActualSocketedGems = PawnUIFrame_UseActualSocketedGemsCheck:GetChecked()
 	PawnClearCache()
 	PawnInvalidateBestItems()
@@ -2765,34 +2783,57 @@ end
 
 -- Makes sure that all first-open initialization has been performed.
 function PawnUI_EnsureLoaded()
+	PawnTrace("PawnUI_EnsureLoaded enter; PawnUIOpenedYet=" .. tostring(PawnUIOpenedYet))
+	PawnTrace("PawnCommon=" .. tostring(PawnCommon))
+	PawnTrace("PawnUIFrame=" .. tostring(PawnUIFrame))
+	PawnTrace("PawnUICompareTabPage=" .. tostring(PawnUICompareTabPage))
+	PawnTrace("PawnUIOptionsTabPage=" .. tostring(PawnUIOptionsTabPage))
+	PawnTrace("PawnUIFrame_UseActualSocketedGemsCheck=" .. tostring(PawnUIFrame_UseActualSocketedGemsCheck))
+
 	if not PawnUIOpenedYet then
 		PawnUIOpenedYet = true
+		PawnTrace("First open path")
 		StandardGemsUnavailable = not not (VgerCore.IsClassic or (PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()))
+		PawnTrace("StandardGemsUnavailable=" .. tostring(StandardGemsUnavailable))
+
 		PawnUIFrame_ScaleSelector_Refresh()
+		PawnTrace("After PawnUIFrame_ScaleSelector_Refresh")
+
 		PawnUIFrame_ShowScaleCheck_Label:SetText(format(PawnUIFrame_ShowScaleCheck_Label_Text, UnitName("player")))
+		PawnTrace("After setting ShowScale label")
+
 		if StandardGemsUnavailable then
-			-- WoW Classic Era doesn't have gems.
-			-- Timerunning season 1 (Mists of Pandaria Remix) didn't use standard gems, though future seasons may.
+			PawnTrace("Hiding gem-related controls")
 			PawnUIFrameTab4:Hide()
 			PawnUIFrame_IgnoreGemsWhileLevelingCheck:Hide()
 			PawnUIFrame_ShowSocketingAdvisorCheck:Hide()
 		end
+
 		if not VgerCore.HasSpecs then
+			PawnTrace("Hiding spec icon check")
 			PawnUIFrame_ShowSpecIconsCheck:Hide()
 		end
+
 		if not VgerCore.ReforgingExists then
+			PawnTrace("Hiding reforging advisor check")
 			PawnUIFrame_ShowReforgingAdvisorCheck:Hide()
 		end
+
 		if not PawnCommon then
+			PawnTrace("PawnCommon missing; switching to help tab")
 			VgerCore.Fail("Pawn UI OnShow handler was called before PawnCommon was initialized.")
 			PawnUISwitchToTab(PawnUIHelpTabPage)
 		elseif not PawnCommon.ShownGettingStarted then
+			PawnTrace("First-time user path; switching to help tab")
 			PawnCommon.ShownGettingStarted = true
 			PawnUISwitchToTab(PawnUIHelpTabPage)
 		else
+			PawnTrace("Normal path; switching to compare tab")
 			PawnUISwitchToTab(PawnUICompareTabPage)
 		end
 	end
+
+	PawnTrace("PawnUI_EnsureLoaded exit")
 end
 
 -- Shows a tooltip for a given control if available.

@@ -939,6 +939,7 @@ end
 
 -- Processes a Pawn slash command.
 function PawnCommand(Command)
+	PawnDebugMessage("PawnCommand received: [" .. tostring(Command) .. "]")
 	if Command == "" then
 		PawnUIShow()
 	elseif Command == "debug on" then
