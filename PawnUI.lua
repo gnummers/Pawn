@@ -1949,8 +1949,6 @@ end
 
 -- When the Options tab is first shown, set the values of all of the controls based on the user's settings.
 function PawnUIOptionsTabPage_OnShow()
-	PawnTrace("PawnUIOptionsTabPage_OnShow enter")
-
 	-- Tooltip options
 	PawnUIFrame_ShowItemIDsCheck:SetChecked(PawnCommon.ShowItemID)
 	PawnUIFrame_ShowIconsCheck:SetChecked(PawnCommon.ShowTooltipIcons)
@@ -1962,9 +1960,8 @@ function PawnUIOptionsTabPage_OnShow()
 
 	if PawnUIFrame_UseActualSocketedGemsCheck then
 		PawnUIFrame_UseActualSocketedGemsCheck:SetChecked(PawnCommon.UseActualSocketedGems)
-		PawnTrace("UseActualSocketedGems checkbox found")
 	else
-		PawnTrace("Missing frame: PawnUIFrame_UseActualSocketedGemsCheck")
+		print("Pawn dbg: missing PawnUIFrame_UseActualSocketedGemsCheck")
 	end
 
 	-- Upgrade options
@@ -2083,7 +2080,7 @@ end
 
 function PawnUIFrame_UseActualSocketedGemsCheck_OnClick()
 	if not PawnUIFrame_UseActualSocketedGemsCheck then
-		PawnTrace("UseActualSocketedGems click handler fired but frame is nil")
+		print("Pawn dbg: UseActualSocketedGems checkbox missing")
 		return
 	end
 
@@ -2765,19 +2762,34 @@ end
 
 -- Switches to a tab and shows the Pawn UI if not already visible.
 -- If Toggle is true, close the Pawn UI if it was already visible on that page.
-function PawnUIShowTab(Tab, Toggle)
-	if not PawnUIFrame:IsShown() then
-		PawnUIShow()
-		PawnUISwitchToTab(Tab)
-	elseif not Tab:IsShown() then
-		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
-		PawnUISwitchToTab(Tab)
-	else
-		if Toggle then
-			PawnUIShow()
-		else
-			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+function PawnUIShow()
+	print("PawnUIShow called",
+		"PawnIsInitialized=" .. tostring(PawnIsInitialized),
+		"PawnUIFrame=" .. tostring(PawnUIFrame)
+	)
+
+	if DEFAULT_CHAT_FRAME then
+		DEFAULT_CHAT_FRAME:AddMessage(
+			"|cff00ff98Pawn dbg:|r PawnUIShow called, " ..
+			"PawnIsInitialized=" .. tostring(PawnIsInitialized) ..
+			", PawnUIFrame=" .. tostring(PawnUIFrame)
+		)
+	end
+
+	if not PawnIsInitialized or not PawnUIFrame then
+		print("PawnUIShow early exit")
+		if DEFAULT_CHAT_FRAME then
+			DEFAULT_CHAT_FRAME:AddMessage("|cffff6666Pawn dbg:|r PawnUIShow early exit")
 		end
+		VgerCore.Fail("There was an error loading Pawn and its UI is not ready. /console scriptErrors 1 can help you see why.")
+		return
+	end
+
+	print("PawnUIShow toggling frame")
+	if PawnUIFrame:IsShown() then
+		PawnUIFrame:Hide()
+	else
+		PawnUIFrame:Show()
 	end
 end
 
