@@ -29,7 +29,7 @@ local PawnEpsilon = 0.0000000001
 local PawnInfinity = 1.79769313E308
 
 -- Set to true once initialization completes
-local PawnIsInitialized
+PawnIsInitialized = nil
 
 -- Name of our private tooltip defined in PawnUI.xml
 PawnPrivateTooltipName = "PawnPrivateTooltip1"
@@ -6134,10 +6134,17 @@ end
 
 -- Shows or hides the Pawn UI.
 function PawnUIShow()
-	if not PawnIsInitialized or not PawnUIFrame then
-		VgerCore.Fail("There was an error loading Pawn and its UI is not ready. /console scriptErrors 1 can help you see why.")
+	print("PawnUIShow called", "PawnIsInitialized=" .. tostring(PawnIsInitialized), "PawnUIFrame=" .. tostring(PawnUIFrame))
+
+	if not PawnUIFrame then
+		VgerCore.Fail("Pawn UI frame is missing.")
 		return
 	end
+	if not PawnIsInitialized then
+		VgerCore.Fail("Pawn is not initialized yet.")
+		return
+	end
+
 	if PawnUIFrame:IsShown() then
 		PawnUIFrame:Hide()
 	else
