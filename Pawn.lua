@@ -156,6 +156,11 @@ local _
 
 -- Called when an event that Pawn cares about is fired.
 function PawnOnEvent(Event, arg1, arg2, ...)
+	print("PawnOnEvent:", tostring(Event), tostring(arg1), tostring(arg2))
+	if DEFAULT_CHAT_FRAME then
+		DEFAULT_CHAT_FRAME:AddMessage("|cff00ff98Pawn dbg:|r PawnOnEvent " .. tostring(Event))
+	end
+
 	if Event == "UNIT_INVENTORY_CHANGED" and arg1 == "player" then
 		PawnOnInventoryChanged()
 	elseif Event == "ITEM_LOCKED" then
@@ -172,6 +177,7 @@ function PawnOnEvent(Event, arg1, arg2, ...)
 	elseif Event == "GROUP_ROSTER_UPDATE" then
 		PawnShowPlayingWithVgerEasterEgg()
 	elseif Event == "PLAYER_LOGIN" then
+		print("PawnOnEvent -> PawnInitialize")
 		PawnInitialize()
 	elseif Event == "PLAYER_LOGOUT" then
 		PawnOnLogout()
@@ -198,17 +204,36 @@ end
 
 -- Initializes Pawn after all saved variables have been loaded.
 function PawnInitialize()
-	-- This only needs to happen once.  If it's ever triggered again for any reason, bail out now.
-	if PawnIsInitialized then return end
+	print("PawnInitialize enter", tostring(PawnIsInitialized))
+
+	if PawnIsInitialized then
+		print("PawnInitialize: already initialized")
+		return
+	end
 
 	local _
 
-	-- Check the current version of VgerCore.
+	print("PawnInitialize: checking VgerCore", tostring(VgerCore), tostring(VgerCore and VgerCore.Version))
 	if (not VgerCore) or (not VgerCore.Version) or (VgerCore.Version < PawnVgerCoreVersionRequired) then
+		print("PawnInitialize: FAIL VgerCore check")
 		if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("|cfffe8460" .. PawnLocal.NeedNewerVgerCoreMessage) end
 		message(PawnLocal.NeedNewerVgerCoreMessage)
 		return
 	end
+
+	print("PawnInitialize: before slash commands")
+	SLASH_PAWN1 = "/pawn"
+	SlashCmdList["PAWN"] = PawnCommand
+
+	print("PawnInitialize: before PawnInitializeOptions")
+	PawnInitializeOptions()
+	print("PawnInitialize: after PawnInitializeOptions", tostring(PawnCommon), tostring(PawnOptions))
+
+	print("PawnInitialize: before PawnSetDefaultKeybindings")
+	PawnSetDefaultKeybindings()
+
+	print("PawnInitialize: before PawnUI_InventoryPawnButton_Move")
+	PawnUI_InventoryPawnButton_Move()
 
 	-- Check the user's current locale, and show a message if it isn't the right one for this version of Pawn.
 	local CurrentLocale = GetLocale()
@@ -499,7 +524,9 @@ function PawnInitialize()
 	end
 
 	-- We're now effectively initialized.  Just the last steps of scale initialization remain.
+	print("PawnInitialize: about to set PawnIsInitialized=true")
 	PawnIsInitialized = true
+	print("PawnInitialize: PawnIsInitialized now", tostring(PawnIsInitialized))
 
 	-- If any of our dependencies have already loaded, pretend that they just loaded now.
 	if C_AddOns.IsAddOnLoaded("Blizzard_ArtifactUI") then PawnOnAddonLoaded("Blizzard_ArtifactUI") end
@@ -534,6 +561,7 @@ function PawnInitialize()
 		PawnRecalculateScaleTotal(ScaleName)
 	end
 
+	print("PawnInitialize: exit")
 end
 
 function PawnOnLogout()
