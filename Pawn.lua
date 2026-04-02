@@ -2741,8 +2741,8 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 	local BasicSocketsCount = (Item.PrismaticSocket or 0) + (Item.RedSocket or 0) + (Item.YellowSocket or 0) + (Item.BlueSocket or 0)
 
 	if UseActualSocketedGems then
-		-- The live/current item stats already include inserted gem stats.
-		-- So do not add any theoretical best-gem socket value.
+		-- Real inserted gem stats are already in the live item stats.
+		-- Do not add any synthetic/theoretical socket value.
 		TotalSocketValue = 0
 		ProperSocketValue = 0
 		SocketBonusValue = 0
@@ -2785,6 +2785,27 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 		else
 			TotalSocketValue = ProperSocketValue
 		end
+
+		-- Finally, meta sockets are just kind of their own separate thing.
+		TotalSocketValue = TotalSocketValue + SocketValue("MetaSocket", MetaGemQualityLevel)
+
+		ThisValue = ScaleValues.MetaSocketEffect
+		if ThisValue then
+			Stat = "MetaSocketEffect"
+			Quantity = Item[Stat]
+			if Quantity then
+				TotalSocketValue = TotalSocketValue + Quantity * ThisValue
+				if DebugMessages then
+					PawnDebugMessage(format(PawnLocal.ValueCalculationMessage, Quantity, Stat, ThisValue, Quantity * ThisValue))
+				end
+			end
+		end
+
+		-- In Cataclysm there are also cogwheels for engineering goggles. Sigh.
+		TotalSocketValue = TotalSocketValue + SocketValue("CogwheelSocket", CogwheelQualityLevel)
+
+		-- Mists of Pandaria introduced the first expansion-specific socket type.
+		TotalSocketValue = TotalSocketValue + SocketValue("ShaTouchedSocket", CrystalOfFearQualityLevel)
 	end
 
 
