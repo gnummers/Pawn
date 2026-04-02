@@ -2740,7 +2740,8 @@ end
 --		SocketBonusValue: The total value of the socket bonus, IF it's worthwhile. (This is already factored into the previous two values.)
 function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages, NoNormalization, NoReforging, UseActualSocketedGems)
 	if UseActualSocketedGems == nil then
-	UseActualSocketedGems = PawnCommon and PawnCommon.UseActualSocketedGems
+		UseActualSocketedGems = PawnCommon and PawnCommon.UseActualSocketedGems
+	end
 	-- If either the item or scale is empty, exit now.
 	if (not Item) or (not ScaleName) then return end
 	local ScaleOptions = PawnCommon.Scales[ScaleName]
