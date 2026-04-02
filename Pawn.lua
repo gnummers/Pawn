@@ -2884,35 +2884,51 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 
 				local BasicSocketsCount = (Item.PrismaticSocket or 0) + (Item.RedSocket or 0) + (Item.YellowSocket or 0) + (Item.BlueSocket or 0)
 
-				-- First, find the total value of the sockets assuming we ignore the socket bonus.
-				local BestGemName = PawnGetGemListString(ScaleName, true, ItemLevel, "Prismatic")
-				local BestGemValue = ThisScaleBestGems["PrismaticSocketValue"][GemQualityLevel] or 0
-				local MissocketedValue = BasicSocketsCount * BestGemValue
-
-				-- Then, see if we can get a better value by going for the socket bonus.
-				if SocketBonus then
-					for Stat, Quantity in pairs(SocketBonus) do
-						ThisValue = ScaleValues[Stat]
-						if ThisValue then
-							SocketBonusValue = SocketBonusValue + ThisValue * Quantity
-							if DebugMessages then PawnDebugMessage(format(PawnLocal.ValueCalculationMessage, Quantity, Stat, ThisValue, Quantity * ThisValue)) end
-						end
-					end
-					if DebugMessages then PawnDebugMessage(format(PawnLocal.SocketBonusValueCalculationMessage, SocketBonusValue)) end
-					ProperSocketValue =
-						SocketValue("PrismaticSocket", GemQualityLevel) +
-						SocketValue("RedSocket", GemQualityLevel) +
-						SocketValue("YellowSocket", GemQualityLevel) +
-						SocketValue("BlueSocket", GemQualityLevel) +
-						SocketBonusValue
-				end -- if SocketBonus
-
-				if MissocketedValue > ProperSocketValue then
-					if DebugMessages then PawnDebugMessage(string.format(PawnLocal.MissocketWorthwhileMessage, BestGemName)) end
-					TotalSocketValue = MissocketedValue
+				if UseActualSocketedGems then
+					-- Current/live item stats already include the stats from gems that are actually inserted.
+					-- So do not award any synthetic "best possible gem" value here.
+					TotalSocketValue = 0
+					ProperSocketValue = 0
 					SocketBonusValue = 0
 				else
-					TotalSocketValue = ProperSocketValue
+					-- First, find the total value of the sockets assuming we ignore the socket bonus.
+					local BestGemName = PawnGetGemListString(ScaleName, true, ItemLevel, "Prismatic")
+					local BestGemValue = ThisScaleBestGems["PrismaticSocketValue"][GemQualityLevel] or 0
+					local MissocketedValue = BasicSocketsCount * BestGemValue
+
+					-- Then, see if we can get a better value by going for the socket bonus.
+					if SocketBonus then
+						for Stat, Quantity in pairs(SocketBonus) do
+							ThisValue = ScaleValues[Stat]
+							if ThisValue then
+								SocketBonusValue = SocketBonusValue + ThisValue * Quantity
+								if DebugMessages then
+									PawnDebugMessage(format(PawnLocal.ValueCalculationMessage, Quantity, Stat, ThisValue, Quantity * ThisValue))
+								end
+							end
+						end
+
+						if DebugMessages then
+							PawnDebugMessage(format(PawnLocal.SocketBonusValueCalculationMessage, SocketBonusValue))
+						end
+
+						ProperSocketValue =
+							SocketValue("PrismaticSocket", GemQualityLevel) +
+							SocketValue("RedSocket", GemQualityLevel) +
+							SocketValue("YellowSocket", GemQualityLevel) +
+							SocketValue("BlueSocket", GemQualityLevel) +
+							SocketBonusValue
+					end
+
+					if MissocketedValue > ProperSocketValue then
+						if DebugMessages then
+							PawnDebugMessage(string.format(PawnLocal.MissocketWorthwhileMessage, BestGemName))
+						end
+						TotalSocketValue = MissocketedValue
+						SocketBonusValue = 0
+					else
+						TotalSocketValue = ProperSocketValue
+					end
 				end
 
 				-- Finally, meta sockets are just kind of their own separate thing.
