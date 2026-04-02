@@ -594,6 +594,10 @@ function PawnInitializeOptions()
 	if not PawnCommon then PawnCommon = {} end
 	if not PawnOptions then PawnOptions = {} end
 
+	if PawnCommon.UseActualSocketedGems == nil then
+		PawnCommon.UseActualSocketedGems = false
+	end
+
 	-- We need to know the player's full name for some server-specific settings.
 	PawnPlayerFullName = UnitName("player") .. "-" .. GetRealmName()
 	-- Save the last known player name to PawnOptions so that we can detect character renames and server
