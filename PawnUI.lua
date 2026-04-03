@@ -1296,10 +1296,11 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	if (not Item1) or (not Item2) then return end
 
 	-- We have two comparison items set.  Do the compare!
-	local ItemStats1 = Item1.UnenchantedStats
-	local ItemSocketBonusStats1 = Item1.UnenchantedSocketBonusStats
-	local ItemStats2 = Item2.UnenchantedStats
-	local ItemSocketBonusStats2 = Item2.UnenchantedSocketBonusStats
+	local UseActualSocketedGems = PawnCommon.UseActualSocketedGems
+	local ItemStats1 = UseActualSocketedGems and Item1.Stats or Item1.UnenchantedStats
+	local ItemSocketBonusStats1 = UseActualSocketedGems and Item1.SocketBonusStats or Item1.UnenchantedSocketBonusStats
+	local ItemStats2 = UseActualSocketedGems and Item2.Stats or Item2.UnenchantedStats
+	local ItemSocketBonusStats2 = UseActualSocketedGems and Item2.SocketBonusStats or Item2.UnenchantedSocketBonusStats
 	local ThisScale = PawnCommon.Scales[PawnUICurrentScale]
 	local ThisScaleValues = ThisScale.Values
 
@@ -1342,8 +1343,8 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	LastFoundHeader = PawnLocal.UI.CompareSocketsHeader
 
 	local AddSockets = function(Stat, FriendlyName)
-		local HasSockets1 = Item1.UnenchantedStats[Stat]
-		local HasSockets2 = Item2.UnenchantedStats[Stat]
+		local HasSockets1 = ItemStats1[Stat]
+		local HasSockets2 = ItemStats2[Stat]
 		if not HasSockets1 or HasSockets1 <= 0 then HasSockets1 = nil end
 		if not HasSockets2 or HasSockets2 <= 0 then HasSockets2 = nil end
 		if HasSockets1 or HasSockets2 then
@@ -1363,8 +1364,8 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	AddSockets("CogwheelSocket", EMPTY_SOCKET_COGWHEEL)
 	AddSockets("ShaTouchedSocket", EMPTY_SOCKET_HYDRAULIC)
 
-	local _, TotalSocketValue1, SocketBonusValue1 = PawnGetItemValue(ItemStats1, Item1.Level, ItemSocketBonusStats1, PawnUICurrentScale, false, true)
-	local _, TotalSocketValue2, SocketBonusValue2 = PawnGetItemValue(ItemStats2, Item2.Level, ItemSocketBonusStats2, PawnUICurrentScale, false, true)
+	local _, TotalSocketValue1, SocketBonusValue1 = PawnGetItemValue(ItemStats1, Item1.Level, ItemSocketBonusStats1, PawnUICurrentScale, false, true, nil, UseActualSocketedGems)
+	local _, TotalSocketValue2, SocketBonusValue2 = PawnGetItemValue(ItemStats2, Item2.Level, ItemSocketBonusStats2, PawnUICurrentScale, false, true, nil, UseActualSocketedGems)
 	if TotalSocketValue1 and SocketBonusValue1 then TotalSocketValue1 = TotalSocketValue1 - SocketBonusValue1 end -- socket bonus is already included in total socket value
 	if TotalSocketValue2 and SocketBonusValue2 then TotalSocketValue2 = TotalSocketValue2 - SocketBonusValue2 end
 
@@ -1438,8 +1439,12 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	local ValueFormat = "%." .. PawnCommon.Digits .. "f"
 	local r, g, b = VgerCore.HexToRGB(PawnCommon.Scales[PawnUICurrentScale].Color)
 	if not r then r, g, b = VgerCore.Color.BlueR, VgerCore.Color.BlueG, VgerCore.Color.BlueB end
-	local _, Value1 = PawnGetSingleValueFromItem(Item1, PawnUICurrentScale)
-	local _, Value2 = PawnGetSingleValueFromItem(Item2, PawnUICurrentScale)
+	local Value1, UnenchantedValue1 = PawnGetSingleValueFromItem(Item1, PawnUICurrentScale)
+	local Value2, UnenchantedValue2 = PawnGetSingleValueFromItem(Item2, PawnUICurrentScale)
+	if not UseActualSocketedGems then
+		Value1 = UnenchantedValue1
+		Value2 = UnenchantedValue2
+	end
 	local Value1String, Value2String
 	if Value1 then
 		if Value1 >= 1000 then
