@@ -1883,13 +1883,15 @@ function PawnGetAllItemValues(Item, ItemLevel, SocketBonus, UnenchantedItem, Une
 	local ItemValues = {}
 	for ScaleName, _ in pairs(PawnCommon.Scales) do
 		local ShowScale = PawnIsScaleVisible(ScaleName)
-		if ShowScale then -- Skip all disabled scales.  PawnGetSingleValueFromItem will calculate them on-demand if necessary.
+		if ShowScale then
 			if ShowScale and DebugMessages then
 				PawnDebugMessage(" ")
 				PawnDebugMessage(PawnGetScaleLocalizedName(ScaleName) .. " --------------------")
 			end
+
 			local Value
 			local UnenchantedValue
+
 			if UnenchantedItem then
 				UnenchantedValue = PawnGetItemValue(
 					UnenchantedItem,
@@ -1920,10 +1922,16 @@ function PawnGetAllItemValues(Item, ItemLevel, SocketBonus, UnenchantedItem, Une
 					PawnCommon.UseActualSocketedGems
 				)
 			end
+
+			tinsert(ItemValues, {
+				ScaleName,
+				Value,
+				UnenchantedValue,
+				PawnGetScaleLocalizedName(ScaleName),
+			})
 		end
 	end
 
-	-- Sort the table, then return it.
 	sort(ItemValues, PawnItemValueCompare)
 	return ItemValues
 end
