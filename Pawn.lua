@@ -3741,14 +3741,16 @@ function PawnIsItemAnUpgrade(Item, DoNotRescan)
 								if PawnNeverShowUpgradesFor[Item1.ID] then
 									Value1 = PawnInfinity
 								else
-									_, Value1 = PawnGetSingleValueFromItem(Item1, ScaleName)
+									local CurrentValue1, UnenchantedValue1 = PawnGetSingleValueFromItem(Item1, ScaleName)
+									Value1 = PawnCommon.UseActualSocketedGems and CurrentValue1 or UnenchantedValue1
 								end
 							end
 							if Item2 then
 								if PawnNeverShowUpgradesFor[Item2.ID] then
 									Value2 = PawnInfinity
 								else
-									_, Value2 = PawnGetSingleValueFromItem(Item2, ScaleName)
+									local CurrentValue2, UnenchantedValue2 = PawnGetSingleValueFromItem(Item2, ScaleName)
+									Value2 = PawnCommon.UseActualSocketedGems and CurrentValue2 or UnenchantedValue2
 								end
 							end
 						end
@@ -3777,7 +3779,8 @@ function PawnIsItemAnUpgrade(Item, DoNotRescan)
 								if CompareUsingItemLevelOnly then
 									ThisValue = Item.Level
 								else
-									_, ThisValue = PawnGetSingleValueFromItem(Item, ScaleName)
+									local CurrentThisValue, UnenchantedThisValue = PawnGetSingleValueFromItem(Item, ScaleName)
+									ThisValue = PawnCommon.UseActualSocketedGems and CurrentThisValue or UnenchantedThisValue
 								end
 							end
 
@@ -3824,7 +3827,10 @@ function PawnIsItemAnUpgrade(Item, DoNotRescan)
 					else
 						-- Not having best item data for a particular slot isn't a bizarre case; it will happen often for low-level characters
 						-- who don't have any helms or shoulders.
-						if not ThisValue then _, ThisValue = PawnGetSingleValueFromItem(Item, ScaleName) end
+						if not ThisValue then
+							local CurrentThisValue, UnenchantedThisValue = PawnGetSingleValueFromItem(Item, ScaleName)
+							ThisValue = PawnCommon.UseActualSocketedGems and CurrentThisValue or UnenchantedThisValue
+						end
 						if ThisValue and ThisValue > 0 then
 							NewTableEntry = { ScaleName = ScaleName, LocalizedScaleName = Scale.LocalizedName or ScaleName, PercentUpgrade = PawnBigUpgradeThreshold }
 						end
