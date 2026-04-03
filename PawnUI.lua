@@ -1342,9 +1342,12 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	-- Add gem and socket information.
 	LastFoundHeader = PawnLocal.UI.CompareSocketsHeader
 
+	local DisplaySocketStats1 = Item1.UnenchantedStats
+	local DisplaySocketStats2 = Item2.UnenchantedStats
+
 	local AddSockets = function(Stat, FriendlyName)
-		local HasSockets1 = ItemStats1[Stat]
-		local HasSockets2 = ItemStats2[Stat]
+		local HasSockets1 = DisplaySocketStats1 and DisplaySocketStats1[Stat]
+		local HasSockets2 = DisplaySocketStats2 and DisplaySocketStats2[Stat]
 		if not HasSockets1 or HasSockets1 <= 0 then HasSockets1 = nil end
 		if not HasSockets2 or HasSockets2 <= 0 then HasSockets2 = nil end
 		if HasSockets1 or HasSockets2 then
@@ -1369,9 +1372,30 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	if TotalSocketValue1 and SocketBonusValue1 then TotalSocketValue1 = TotalSocketValue1 - SocketBonusValue1 end -- socket bonus is already included in total socket value
 	if TotalSocketValue2 and SocketBonusValue2 then TotalSocketValue2 = TotalSocketValue2 - SocketBonusValue2 end
 
-	if not TotalSocketValue1 or TotalSocketValue1 <= 0 then TotalSocketValue1 = nil end
-	if not TotalSocketValue2 or TotalSocketValue2 <= 0 then TotalSocketValue2 = nil end
-	if TotalSocketValue1 or TotalSocketValue2 then
+	local HasAnySockets1 =
+		(DisplaySocketStats1 and (
+			(DisplaySocketStats1.PrismaticSocket or 0) > 0 or
+			(DisplaySocketStats1.RedSocket or 0) > 0 or
+			(DisplaySocketStats1.YellowSocket or 0) > 0 or
+			(DisplaySocketStats1.BlueSocket or 0) > 0 or
+			(DisplaySocketStats1.MetaSocket or 0) > 0 or
+			(DisplaySocketStats1.CogwheelSocket or 0) > 0 or
+			(DisplaySocketStats1.ShaTouchedSocket or 0) > 0
+		))
+	local HasAnySockets2 =
+		(DisplaySocketStats2 and (
+			(DisplaySocketStats2.PrismaticSocket or 0) > 0 or
+			(DisplaySocketStats2.RedSocket or 0) > 0 or
+			(DisplaySocketStats2.YellowSocket or 0) > 0 or
+			(DisplaySocketStats2.BlueSocket or 0) > 0 or
+			(DisplaySocketStats2.MetaSocket or 0) > 0 or
+			(DisplaySocketStats2.CogwheelSocket or 0) > 0 or
+			(DisplaySocketStats2.ShaTouchedSocket or 0) > 0
+		))
+
+	if (not TotalSocketValue1 or TotalSocketValue1 <= 0) and HasAnySockets1 then TotalSocketValue1 = 0 end
+	if (not TotalSocketValue2 or TotalSocketValue2 <= 0) and HasAnySockets2 then TotalSocketValue2 = 0 end
+	if TotalSocketValue1 or TotalSocketValue2 or HasAnySockets1 or HasAnySockets2 then
 		if LastFoundHeader then
 			PawnUI_AddComparisonHeaderLine(LastFoundHeader)
 			LastFoundHeader = nil
