@@ -293,11 +293,9 @@ PawnUIFrame_GemQualityLevelBox_Tooltip = L.GemsQualityLevelTooltip
 -- Configuration UI, Options tab
 PawnUIFrame_OptionsHeaderLabel_Text = L.OptionsWelcome
 -- Custom: Actual vs Optimized Gem Scoring
--- PawnUIString_UseActualSocketedGems = "Use actual socketed gems"
--- PawnUIString_UseActualSocketedGemsTooltip = "When enabled, Pawn scores items using the gems actually socketed in the item instead of optimized gem values."
 
-PawnUIFrame_UseActualSocketedGemsCheck_Text = PawnUIString_UseActualSocketedGems
-PawnUIFrame_UseActualSocketedGemsCheck_Tooltip = PawnUIString_UseActualSocketedGemsTooltip
+-- PawnUIFrame_UseActualSocketedGemsCheck_Text = PawnUIString_UseActualSocketedGems
+-- PawnUIFrame_UseActualSocketedGemsCheck_Tooltip = PawnUIString_UseActualSocketedGemsTooltip
 PawnUIFrame_UseActualSocketedGemsCheck_Text = "Use actual socketed gems"
 PawnUIFrame_UseActualSocketedGemsCheck_Tooltip = "When enabled, Pawn scores items using the gems actually socketed in the item instead of optimized gem values."
 
