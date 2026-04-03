@@ -1,4 +1,4 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ../../../BlizzardInterfaceCode/Interface/FrameXML/UI.xsd">
+﻿<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ../../../BlizzardInterfaceCode/Interface/FrameXML/UI.xsd">
 
 	<!--
 		Pawn by Vger-Azjol-Nerub
@@ -1370,7 +1370,10 @@
 					<CheckButton name="PawnUIFrame_ShowIconsCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="-110" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowIconsCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowIconsCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowIconsCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1378,7 +1381,10 @@
 					<CheckButton name="PawnUIFrame_ShowSpecIconsCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="-135" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowSpecIconsCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowSpecIconsCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowSpecIconsCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1386,7 +1392,10 @@
 					<CheckButton name="PawnUIFrame_AlignRightCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="-160" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_AlignRightCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_AlignRightCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_AlignRightCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1394,7 +1403,10 @@
 					<CheckButton name="PawnUIFrame_ColorTooltipBorderCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="-185" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ColorTooltipBorderCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ColorTooltipBorderCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ColorTooltipBorderCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1402,21 +1414,30 @@
 					<CheckButton name="PawnUIFrame_TooltipUpgradeOnRadio" inherits="PawnUIRadioButtonTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="50" y="-235" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUIRadioButtonLabelTemplate" text="PawnUIFrame_TooltipUpgradeOnRadio_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_TooltipUpgradeOnRadio_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="225" y="15" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick>PawnUIFrame_TooltipUpgradeList_SetSelection(true, false)</OnClick></Scripts>
 					</CheckButton>
 					<CheckButton name="PawnUIFrame_TooltipUpgradeOnUpgradesOnlyRadio" inherits="PawnUIRadioButtonTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="50" y="-255" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUIRadioButtonLabelTemplate" text="PawnUIFrame_TooltipUpgradeOnUpgradesOnlyRadio_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_TooltipUpgradeOnUpgradesOnlyRadio_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="225" y="15" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick>PawnUIFrame_TooltipUpgradeList_SetSelection(true, true)</OnClick></Scripts>
 					</CheckButton>
 					<CheckButton name="PawnUIFrame_TooltipUpgradeOffRadio" inherits="PawnUIRadioButtonTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="50" y="-275" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUIRadioButtonLabelTemplate" text="PawnUIFrame_TooltipUpgradeOffRadio_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_TooltipUpgradeOffRadio_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="225" y="15" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick>PawnUIFrame_TooltipUpgradeList_SetSelection(false, false)</OnClick></Scripts>
 					</CheckButton>
@@ -1488,7 +1509,10 @@
 					<CheckButton name="PawnUIFrame_ShowBagUpgradeAdvisorCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="300" y="-85" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowBagUpgradeAdvisorCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowBagUpgradeAdvisorCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowBagUpgradeAdvisorCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1496,7 +1520,10 @@
 					<CheckButton name="PawnUIFrame_ShowLootUpgradeAdvisorCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="300" y="-110" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowLootUpgradeAdvisorCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowLootUpgradeAdvisorCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowLootUpgradeAdvisorCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1504,7 +1531,10 @@
 					<CheckButton name="PawnUIFrame_ShowQuestUpgradeAdvisorCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="300" y="-135" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowQuestUpgradeAdvisorCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowQuestUpgradeAdvisorCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowQuestUpgradeAdvisorCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1512,7 +1542,10 @@
 					<CheckButton name="PawnUIFrame_ShowSocketingAdvisorCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="300" y="-160" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowSocketingAdvisorCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowSocketingAdvisorCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowSocketingAdvisorCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1520,7 +1553,10 @@
 					<CheckButton name="PawnUIFrame_ShowReforgingAdvisorCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="300" y="-185" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowReforgingAdvisorCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowReforgingAdvisorCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowReforgingAdvisorCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1530,7 +1566,10 @@
 					<CheckButton name="PawnUIFrame_DebugCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="300" y="-260" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_DebugCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_DebugCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_DebugCheck_OnClick" /></Scripts>
 					</CheckButton>
@@ -1538,21 +1577,30 @@
 					<CheckButton name="PawnUIFrame_ButtonRightRadio" inherits="PawnUIRadioButtonTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="325" y="-310" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUIRadioButtonLabelTemplate" text="PawnUIFrame_ButtonRightRadio_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ButtonRightRadio_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="225" y="15" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick>PawnUIFrame_ButtonPositionList_SetSelection(PawnButtonPositionRight)</OnClick></Scripts>
 					</CheckButton>
 					<CheckButton name="PawnUIFrame_ButtonLeftRadio" inherits="PawnUIRadioButtonTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="325" y="-330" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUIRadioButtonLabelTemplate" text="PawnUIFrame_ButtonLeftRadio_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ButtonLeftRadio_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="225" y="15" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick>PawnUIFrame_ButtonPositionList_SetSelection(PawnButtonPositionLeft)</OnClick></Scripts>
 					</CheckButton>
 					<CheckButton name="PawnUIFrame_ButtonOffRadio" inherits="PawnUIRadioButtonTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="325" y="-350" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUIRadioButtonLabelTemplate" text="PawnUIFrame_ButtonOffRadio_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormalSmall" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ButtonOffRadio_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="225" y="15" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick>PawnUIFrame_ButtonPositionList_SetSelection(PawnButtonPositionHidden)</OnClick></Scripts>
 					</CheckButton>
@@ -1560,7 +1608,10 @@
 					<CheckButton name="PawnUIFrame_ShowItemIDsCheck" inherits="PawnUICheckboxTemplate">
 						<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="300" y="-375" /></Offset></Anchor></Anchors>
 						<Layers><Layer level="ARTWORK">
-							<FontString name="$parent_Label" inherits="PawnUICheckboxLabelTemplate" text="PawnUIFrame_ShowItemIDsCheck_Text" />
+							<FontString name="$parent_Label" inherits="GameFontNormal" justifyH="LEFT" justifyV="MIDDLE" text="PawnUIFrame_ShowItemIDsCheck_Text">
+							<Anchors><Anchor point="TOPLEFT"><Offset><AbsDimension x="25" y="0" /></Offset></Anchor></Anchors>
+							<Size><AbsDimension x="250" y="25" /></Size>
+						</FontString>
 						</Layer></Layers>
 						<Scripts><OnClick function="PawnUIFrame_ShowItemIDsCheck_OnClick" /></Scripts>
 					</CheckButton>
