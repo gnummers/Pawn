@@ -2786,6 +2786,7 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 	local SocketBonusValue = 0
 	local SocketItemLevel = GemQualityItemLevelOverride or ItemLevel
 
+
 	local IsUnusable
 	local ThisValue
 	for Stat, Quantity in pairs(Item) do

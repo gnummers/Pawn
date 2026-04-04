@@ -1477,8 +1477,10 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	if not r then r, g, b = VgerCore.Color.BlueR, VgerCore.Color.BlueG, VgerCore.Color.BlueB end
 	local Value1, Value2
 	if UseActualSocketedGems then
-		Value1 = PawnGetItemValue(Item1.Stats, Item1.Level, Item1.SocketBonusStats, PawnUICurrentScale, false, false, true, true)
-		Value2 = PawnGetItemValue(Item2.Stats, Item2.Level, Item2.SocketBonusStats, PawnUICurrentScale, false, false, true, true)
+		local CurrentValue1 = PawnGetItemValue(Item1.Stats, Item1.Level, Item1.SocketBonusStats, PawnUICurrentScale, false, false, true, true)
+		local CurrentValue2 = PawnGetItemValue(Item2.Stats, Item2.Level, Item2.SocketBonusStats, PawnUICurrentScale, false, false, true, true)
+		Value1 = CurrentValue1
+		Value2 = CurrentValue2
 	elseif GemQualityItemLevelOverride then
 		Value1 = PawnGetItemValue(Item1.UnenchantedStats, Item1.Level, Item1.UnenchantedSocketBonusStats, PawnUICurrentScale, false, false, false, false, GemQualityItemLevelOverride)
 		Value2 = PawnGetItemValue(Item2.UnenchantedStats, Item2.Level, Item2.UnenchantedSocketBonusStats, PawnUICurrentScale, false, false, false, false, GemQualityItemLevelOverride)
