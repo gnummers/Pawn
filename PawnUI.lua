@@ -1066,9 +1066,14 @@ function PawnUI_SetCompareItem(Index, ItemLink)
 		else
 			-- Check to make sure it's an item link and not, say, a battle pet.
 			if PawnGetHyperlinkType(ItemLink) ~= "item" then return end
-			-- Unenchant the item link.
-			ItemLink = PawnUnenchantItemLink(ItemLink, true)
-			Item = PawnGetItemData(ItemLink)
+			-- When showing actual socketed gems, keep the original item link so the item's real
+			-- gem IDs survive into PawnGetItemData(ItemLink) and the Compare tab can display the
+			-- inserted gem stats.  Otherwise, keep the old behavior and compare the unenchant/gem-stripped item.
+			local ItemDataLink = ItemLink
+			if not PawnCommon.UseActualSocketedGems then
+				ItemDataLink = PawnUnenchantItemLink(ItemLink, true)
+			end
+			Item = PawnGetItemData(ItemDataLink)
 			-- If Item is nil, then that item isn't actually a valid item with stats, so we shouldn't allow it in the compare UI.
 			if not Item then return end
 		end
