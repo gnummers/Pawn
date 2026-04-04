@@ -2768,7 +2768,7 @@ end
 --		Value: The numeric value of an item based on the given scale values.  (example: 21.75)
 --		TotalSocketValue: The total value of the sockets and socket bonus if applicable. (This is already factored into the total value.)
 --		SocketBonusValue: The total value of the socket bonus, IF it's worthwhile. (This is already factored into the previous two values.)
-function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages, NoNormalization, NoReforging, UseActualSocketedGems)
+function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages, NoNormalization, NoReforging, UseActualSocketedGems, GemQualityItemLevelOverride)
 	if UseActualSocketedGems == nil then
 		UseActualSocketedGems = PawnCommon and PawnCommon.UseActualSocketedGems
 	end
@@ -2784,7 +2784,7 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 	local TotalSocketValue = 0
 	local ProperSocketValue = 0
 	local SocketBonusValue = 0
-
+	local SocketItemLevel = GemQualityItemLevelOverride or ItemLevel
 
 	local IsUnusable
 	local ThisValue
@@ -2847,17 +2847,17 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 	local ThisScaleBestGems = PawnScaleBestGems[ScaleName]
 	if not IsUnusable then
 		if ThisScaleBestGems then
-			local ShouldIncludeSockets = (not PawnCommon.IgnoreGemsWhileLeveling) or (ItemLevel ~= nil and ItemLevel >= PawnMinimumItemLevelToConsiderGems)
+			local ShouldIncludeSockets = (not PawnCommon.IgnoreGemsWhileLeveling) or (SocketItemLevel ~= nil and SocketItemLevel >= PawnMinimumItemLevelToConsiderGems)
 
 			if ShouldIncludeSockets and (
 				Item.PrismaticSocket or Item.RedSocket or Item.YellowSocket or Item.BlueSocket or
 				Item.MetaSocket or Item.MetaSocketEffect or Item.CogwheelSocket or Item.ShaTouchedSocket
 			) then
 				if not UseActualSocketedGems then
-					local GemQualityLevel = PawnGetGemQualityForItem(PawnGemQualityLevels, ItemLevel)
-					local MetaGemQualityLevel = PawnGetGemQualityForItem(PawnMetaGemQualityLevels, ItemLevel)
-					local CogwheelQualityLevel = PawnGetGemQualityForItem(PawnCogwheelQualityLevels, ItemLevel)
-					local CrystalOfFearQualityLevel = PawnGetGemQualityForItem(PawnCrystalOfFearQualityLevels, ItemLevel)
+					local GemQualityLevel = PawnGetGemQualityForItem(PawnGemQualityLevels, SocketItemLevel)
+					local MetaGemQualityLevel = PawnGetGemQualityForItem(PawnMetaGemQualityLevels, SocketItemLevel)
+					local CogwheelQualityLevel = PawnGetGemQualityForItem(PawnCogwheelQualityLevels, SocketItemLevel)
+					local CrystalOfFearQualityLevel = PawnGetGemQualityForItem(PawnCrystalOfFearQualityLevels, SocketItemLevel)
 
 					local SocketValue = function(Stat, QualityLevel)
 						if QualityLevel == nil then return 0 end
@@ -2880,7 +2880,7 @@ function PawnGetItemValue(Item, ItemLevel, SocketBonus, ScaleName, DebugMessages
 
 					local BasicSocketsCount = (Item.PrismaticSocket or 0) + (Item.RedSocket or 0) + (Item.YellowSocket or 0) + (Item.BlueSocket or 0)
 
-					local BestGemName = PawnGetGemListString(ScaleName, true, ItemLevel, "Prismatic")
+					local BestGemName = PawnGetGemListString(ScaleName, true, SocketItemLevel, "Prismatic")
 					local BestGemValue = ThisScaleBestGems["PrismaticSocketValue"][GemQualityLevel] or 0
 					local MissocketedValue = BasicSocketsCount * BestGemValue
 
@@ -4989,7 +4989,7 @@ function PawnIsPlayingWith(TargetName, TargetRealm)
 		if not VgerCore.IsMainline then return end
 		if PawnCommon.HasPlayedWithVger then return end
 		local Show
-		Show, UnitID = PawnIsPlayingWith("Vger", "Azjol-Nerub")
+		Show, UnitID = PawnIsPlayingWith("Vger", "Azjol-Nerub", "Moosenstein")
 		if not Show then return end
 	end
 

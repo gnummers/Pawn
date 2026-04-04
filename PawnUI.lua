@@ -1296,6 +1296,7 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 
 	-- We have two comparison items set.  Do the compare!
 	local UseActualSocketedGems = PawnCommon.UseActualSocketedGems
+	local GemQualityItemLevelOverride = (not UseActualSocketedGems) and PawnUIGemQualityLevel or nil
 	local ItemStats1 = UseActualSocketedGems and Item1.Stats or Item1.UnenchantedStats
 	local ItemSocketBonusStats1 = UseActualSocketedGems and Item1.SocketBonusStats or Item1.UnenchantedSocketBonusStats
 	local ItemStats2 = UseActualSocketedGems and Item2.Stats or Item2.UnenchantedStats
@@ -1377,8 +1378,8 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 		SocketBonusValue2 = PawnGetItemValue(Item2.SocketBonusStats, Item2.Level, nil, PawnUICurrentScale, false, true, true, false)
 	else
 		local _
-		_, TotalSocketValue1, SocketBonusValue1 = PawnGetItemValue(ItemStats1, Item1.Level, ItemSocketBonusStats1, PawnUICurrentScale, false, true, nil, false)
-		_, TotalSocketValue2, SocketBonusValue2 = PawnGetItemValue(ItemStats2, Item2.Level, ItemSocketBonusStats2, PawnUICurrentScale, false, true, nil, false)
+		_, TotalSocketValue1, SocketBonusValue1 = PawnGetItemValue(ItemStats1, Item1.Level, ItemSocketBonusStats1, PawnUICurrentScale, false, true, nil, false, GemQualityItemLevelOverride)
+		_, TotalSocketValue2, SocketBonusValue2 = PawnGetItemValue(ItemStats2, Item2.Level, ItemSocketBonusStats2, PawnUICurrentScale, false, true, nil, false, GemQualityItemLevelOverride)
 		if TotalSocketValue1 and SocketBonusValue1 then TotalSocketValue1 = TotalSocketValue1 - SocketBonusValue1 end -- socket bonus is already included in total socket value
 		if TotalSocketValue2 and SocketBonusValue2 then TotalSocketValue2 = TotalSocketValue2 - SocketBonusValue2 end
 	end
@@ -1474,9 +1475,16 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	local ValueFormat = "%." .. PawnCommon.Digits .. "f"
 	local r, g, b = VgerCore.HexToRGB(PawnCommon.Scales[PawnUICurrentScale].Color)
 	if not r then r, g, b = VgerCore.Color.BlueR, VgerCore.Color.BlueG, VgerCore.Color.BlueB end
-	local Value1, UnenchantedValue1 = PawnGetSingleValueFromItem(Item1, PawnUICurrentScale)
-	local Value2, UnenchantedValue2 = PawnGetSingleValueFromItem(Item2, PawnUICurrentScale)
-	if not UseActualSocketedGems then
+	local Value1, Value2
+	if UseActualSocketedGems then
+		Value1 = PawnGetItemValue(Item1.Stats, Item1.Level, Item1.SocketBonusStats, PawnUICurrentScale, false, false, true, true)
+		Value2 = PawnGetItemValue(Item2.Stats, Item2.Level, Item2.SocketBonusStats, PawnUICurrentScale, false, false, true, true)
+	elseif GemQualityItemLevelOverride then
+		Value1 = PawnGetItemValue(Item1.UnenchantedStats, Item1.Level, Item1.UnenchantedSocketBonusStats, PawnUICurrentScale, false, false, false, false, GemQualityItemLevelOverride)
+		Value2 = PawnGetItemValue(Item2.UnenchantedStats, Item2.Level, Item2.UnenchantedSocketBonusStats, PawnUICurrentScale, false, false, false, false, GemQualityItemLevelOverride)
+	else
+		local _, UnenchantedValue1 = PawnGetSingleValueFromItem(Item1, PawnUICurrentScale)
+		local _, UnenchantedValue2 = PawnGetSingleValueFromItem(Item2, PawnUICurrentScale)
 		Value1 = UnenchantedValue1
 		Value2 = UnenchantedValue2
 	end
