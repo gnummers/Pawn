@@ -1366,10 +1366,22 @@ function PawnUI_CompareItems(IsAutomatedRefresh)
 	AddSockets("CogwheelSocket", EMPTY_SOCKET_COGWHEEL)
 	AddSockets("ShaTouchedSocket", EMPTY_SOCKET_HYDRAULIC)
 
-	local _, TotalSocketValue1, SocketBonusValue1 = PawnGetItemValue(ItemStats1, Item1.Level, ItemSocketBonusStats1, PawnUICurrentScale, false, true, nil, UseActualSocketedGems)
-	local _, TotalSocketValue2, SocketBonusValue2 = PawnGetItemValue(ItemStats2, Item2.Level, ItemSocketBonusStats2, PawnUICurrentScale, false, true, nil, UseActualSocketedGems)
-	if TotalSocketValue1 and SocketBonusValue1 then TotalSocketValue1 = TotalSocketValue1 - SocketBonusValue1 end -- socket bonus is already included in total socket value
-	if TotalSocketValue2 and SocketBonusValue2 then TotalSocketValue2 = TotalSocketValue2 - SocketBonusValue2 end
+	local TotalSocketValue1, TotalSocketValue2
+	local SocketBonusValue1, SocketBonusValue2
+
+	if UseActualSocketedGems then
+		TotalSocketValue1 = PawnGetActualGemValueFromItemLink(Item1.Link, PawnUICurrentScale)
+		TotalSocketValue2 = PawnGetActualGemValueFromItemLink(Item2.Link, PawnUICurrentScale)
+
+		SocketBonusValue1 = PawnGetItemValue(Item1.SocketBonusStats, Item1.Level, nil, PawnUICurrentScale, false, true, true, false)
+		SocketBonusValue2 = PawnGetItemValue(Item2.SocketBonusStats, Item2.Level, nil, PawnUICurrentScale, false, true, true, false)
+	else
+		local _
+		_, TotalSocketValue1, SocketBonusValue1 = PawnGetItemValue(ItemStats1, Item1.Level, ItemSocketBonusStats1, PawnUICurrentScale, false, true, nil, false)
+		_, TotalSocketValue2, SocketBonusValue2 = PawnGetItemValue(ItemStats2, Item2.Level, ItemSocketBonusStats2, PawnUICurrentScale, false, true, nil, false)
+		if TotalSocketValue1 and SocketBonusValue1 then TotalSocketValue1 = TotalSocketValue1 - SocketBonusValue1 end -- socket bonus is already included in total socket value
+		if TotalSocketValue2 and SocketBonusValue2 then TotalSocketValue2 = TotalSocketValue2 - SocketBonusValue2 end
+	end
 
 	local HasAnySockets1 =
 		(DisplaySocketStats1 and (

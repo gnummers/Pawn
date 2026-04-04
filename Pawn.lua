@@ -3088,6 +3088,37 @@ function PawnUnenchantItemLink(ItemLink, EvenIfNotEnchanted)
 	end
 end
 
+-- Returns the total value of the gems actually socketed into an item link for a given scale.
+-- This does not include socket bonus value.
+function PawnGetActualGemValueFromItemLink(ItemLink, ScaleName)
+	if not ItemLink or not ScaleName then return 0 end
+
+	local Target = PawnGetHyperlinkTarget(ItemLink)
+	local Pos, _, _, _, GemID1, GemID2, GemID3, GemID4 = strfind(Target, "^item:(%-?%d+):?(%d*):?(%d*):?(%d*):?(%d*):?(%d*):?.*")
+	if not Pos then return 0 end
+
+	local TotalGemValue = 0
+
+	local AddGemValue = function(GemID)
+		if not GemID or GemID == "" or GemID == "0" then return end
+
+		local GemItem = PawnGetItemData("item:" .. GemID)
+		if not GemItem or not GemItem.UnenchantedStats then return end
+
+		local ThisGemValue = PawnGetItemValue(GemItem.UnenchantedStats, GemItem.Level, nil, ScaleName, false, true, true, false)
+		if ThisGemValue then
+			TotalGemValue = TotalGemValue + ThisGemValue
+		end
+	end
+
+	AddGemValue(GemID1)
+	AddGemValue(GemID2)
+	AddGemValue(GemID3)
+	AddGemValue(GemID4)
+
+	return TotalGemValue
+end
+
 -- Returns a nice-looking string that shows the item IDs for an item, its enchantments, and its gems.
 function PawnGetItemIDsForDisplay(ItemLink, Formatted)
 	local Pos, _, ItemID, MoreInfo = strfind(ItemLink, "^|cn[^:]+:|Hitem:(%-?%d+)([^|]+)|")
