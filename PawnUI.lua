@@ -60,12 +60,6 @@ local PawnUIGemAreaPaddingBottom = 0 -- add no padding to the bottom of the scro
 
 local PawnUIFrameNeedsScaleSelector = { true, true, true, true, false, false, false }
 
-local function PawnTrace(Message)
-	if DEFAULT_CHAT_FRAME then
-		DEFAULT_CHAT_FRAME:AddMessage("|cff00ff98Pawn dbg:|r " .. tostring(Message))
-	end
-end
-
 ------------------------------------------------------------
 -- Inventory button
 ------------------------------------------------------------
@@ -1989,8 +1983,6 @@ function PawnUIOptionsTabPage_OnShow()
 
 	if PawnUIFrame_UseActualSocketedGemsCheck then
 		PawnUIFrame_UseActualSocketedGemsCheck:SetChecked(PawnCommon.UseActualSocketedGems)
-	else
-		print("Pawn dbg: missing PawnUIFrame_UseActualSocketedGemsCheck")
 	end
 
 	-- Upgrade options
@@ -2108,10 +2100,7 @@ function PawnUIFrame_IgnoreGemsWhileLevelingCheck_OnClick()
 end
 
 function PawnUIFrame_UseActualSocketedGemsCheck_OnClick()
-	if not PawnUIFrame_UseActualSocketedGemsCheck then
-		print("Pawn dbg: UseActualSocketedGems checkbox missing")
-		return
-	end
+	if not PawnUIFrame_UseActualSocketedGemsCheck then return end
 
 	PawnCommon.UseActualSocketedGems = PawnUIFrame_UseActualSocketedGemsCheck:GetChecked()
 	PawnClearCache()
@@ -2792,29 +2781,11 @@ end
 -- Switches to a tab and shows the Pawn UI if not already visible.
 -- If Toggle is true, close the Pawn UI if it was already visible on that page.
 function PawnUIShow()
-	print("PawnUIShow called",
-		"PawnIsInitialized=" .. tostring(PawnIsInitialized),
-		"PawnUIFrame=" .. tostring(PawnUIFrame)
-	)
-
-	if DEFAULT_CHAT_FRAME then
-		DEFAULT_CHAT_FRAME:AddMessage(
-			"|cff00ff98Pawn dbg:|r PawnUIShow called, " ..
-			"PawnIsInitialized=" .. tostring(PawnIsInitialized) ..
-			", PawnUIFrame=" .. tostring(PawnUIFrame)
-		)
-	end
-
 	if not PawnIsInitialized or not PawnUIFrame then
-		print("PawnUIShow early exit")
-		if DEFAULT_CHAT_FRAME then
-			DEFAULT_CHAT_FRAME:AddMessage("|cffff6666Pawn dbg:|r PawnUIShow early exit")
-		end
 		VgerCore.Fail("There was an error loading Pawn and its UI is not ready. /console scriptErrors 1 can help you see why.")
 		return
 	end
 
-	print("PawnUIShow toggling frame")
 	if PawnUIFrame:IsShown() then
 		PawnUIFrame:Hide()
 	else
@@ -2824,57 +2795,51 @@ end
 
 -- Makes sure that all first-open initialization has been performed.
 function PawnUI_EnsureLoaded()
-	PawnTrace("PawnUI_EnsureLoaded enter; PawnUIOpenedYet=" .. tostring(PawnUIOpenedYet))
-	PawnTrace("PawnCommon=" .. tostring(PawnCommon))
-	PawnTrace("PawnUIFrame=" .. tostring(PawnUIFrame))
-	PawnTrace("PawnUICompareTabPage=" .. tostring(PawnUICompareTabPage))
-	PawnTrace("PawnUIOptionsTabPage=" .. tostring(PawnUIOptionsTabPage))
-	PawnTrace("PawnUIFrame_UseActualSocketedGemsCheck=" .. tostring(PawnUIFrame_UseActualSocketedGemsCheck))
 
 	if not PawnUIOpenedYet then
 		PawnUIOpenedYet = true
-		PawnTrace("First open path")
+		-- PawnTrace("First open path")
 		StandardGemsUnavailable = not not (VgerCore.IsClassic or (PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()))
-		PawnTrace("StandardGemsUnavailable=" .. tostring(StandardGemsUnavailable))
+		-- PawnTrace("StandardGemsUnavailable=" .. tostring(StandardGemsUnavailable))
 
 		PawnUIFrame_ScaleSelector_Refresh()
-		PawnTrace("After PawnUIFrame_ScaleSelector_Refresh")
+		-- PawnTrace("After PawnUIFrame_ScaleSelector_Refresh")
 
 		PawnUIFrame_ShowScaleCheck_Label:SetText(format(PawnUIFrame_ShowScaleCheck_Label_Text, UnitName("player")))
-		PawnTrace("After setting ShowScale label")
+		-- PawnTrace("After setting ShowScale label")
 
 		if StandardGemsUnavailable then
-			PawnTrace("Hiding gem-related controls")
+			-- PawnTrace("Hiding gem-related controls")
 			PawnUIFrameTab4:Hide()
 			PawnUIFrame_IgnoreGemsWhileLevelingCheck:Hide()
 			PawnUIFrame_ShowSocketingAdvisorCheck:Hide()
 		end
 
 		if not VgerCore.HasSpecs then
-			PawnTrace("Hiding spec icon check")
+			-- PawnTrace("Hiding spec icon check")
 			PawnUIFrame_ShowSpecIconsCheck:Hide()
 		end
 
 		if not VgerCore.ReforgingExists then
-			PawnTrace("Hiding reforging advisor check")
+			-- PawnTrace("Hiding reforging advisor check")
 			PawnUIFrame_ShowReforgingAdvisorCheck:Hide()
 		end
 
 		if not PawnCommon then
-			PawnTrace("PawnCommon missing; switching to help tab")
+			-- PawnTrace("PawnCommon missing; switching to help tab")
 			VgerCore.Fail("Pawn UI OnShow handler was called before PawnCommon was initialized.")
 			PawnUISwitchToTab(PawnUIHelpTabPage)
 		elseif not PawnCommon.ShownGettingStarted then
-			PawnTrace("First-time user path; switching to help tab")
+			-- PawnTrace("First-time user path; switching to help tab")
 			PawnCommon.ShownGettingStarted = true
 			PawnUISwitchToTab(PawnUIHelpTabPage)
 		else
-			PawnTrace("Normal path; switching to compare tab")
+			-- PawnTrace("Normal path; switching to compare tab")
 			PawnUISwitchToTab(PawnUICompareTabPage)
 		end
 	end
 
-	PawnTrace("PawnUI_EnsureLoaded exit")
+	-- PawnTrace("PawnUI_EnsureLoaded exit")
 end
 
 -- Shows a tooltip for a given control if available.
