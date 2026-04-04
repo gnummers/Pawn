@@ -4989,7 +4989,7 @@ function PawnIsPlayingWith(TargetName, TargetRealm)
 		if not VgerCore.IsMainline then return end
 		if PawnCommon.HasPlayedWithVger then return end
 		local Show
-		Show, UnitID = PawnIsPlayingWith("Vger", "Azjol-Nerub", "Moosenstein")
+		Show, UnitID = PawnIsPlayingWith("Vger", "Azjol-Nerub")
 		if not Show then return end
 	end
 
