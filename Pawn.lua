@@ -15,7 +15,6 @@ PawnVersion = 2.1310
 -- 3. That calls calls Blizzard_MoneyFrame's UpdateFunc
 -- 4. If we're in combat, we introduce taint into MoneyFrame.staticMoney
 -- 5. Later calls to MoneyFrame_Update fail due to taint
--- Reverted in Pawn 2.13.9 after WoW 12.0.5.
 PawnTempBlockShoppingTooltipUpdates = nil
 
 -- Remove this when 12.0's tooltip secret taint bugs are fixed.
@@ -30,7 +29,7 @@ local PawnEpsilon = 0.0000000001
 local PawnInfinity = 1.79769313E308
 
 -- Set to true once initialization completes
-PawnIsInitialized = nil
+local PawnIsInitialized
 
 -- Name of our private tooltip defined in PawnUI.xml
 PawnPrivateTooltipName = "PawnPrivateTooltip1"
@@ -199,36 +198,17 @@ end
 
 -- Initializes Pawn after all saved variables have been loaded.
 function PawnInitialize()
-	-- print("PawnInitialize enter", tostring(PawnIsInitialized))
-
-	if PawnIsInitialized then
-		-- print("PawnInitialize: already initialized")
-		return
-	end
+	-- This only needs to happen once.  If it's ever triggered again for any reason, bail out now.
+	if PawnIsInitialized then return end
 
 	local _
 
-	-- print("PawnInitialize: checking VgerCore", tostring(VgerCore), tostring(VgerCore and VgerCore.Version))
+	-- Check the current version of VgerCore.
 	if (not VgerCore) or (not VgerCore.Version) or (VgerCore.Version < PawnVgerCoreVersionRequired) then
-		-- print("PawnInitialize: FAIL VgerCore check")
 		if DEFAULT_CHAT_FRAME then DEFAULT_CHAT_FRAME:AddMessage("|cfffe8460" .. PawnLocal.NeedNewerVgerCoreMessage) end
 		message(PawnLocal.NeedNewerVgerCoreMessage)
 		return
 	end
-
-	-- print("PawnInitialize: before slash commands")
-	SLASH_PAWN1 = "/pawn"
-	SlashCmdList["PAWN"] = PawnCommand
-
-	-- print("PawnInitialize: before PawnInitializeOptions")
-	PawnInitializeOptions()
-	-- print("PawnInitialize: after PawnInitializeOptions", tostring(PawnCommon), tostring(PawnOptions))
-
-	-- print("PawnInitialize: before PawnSetDefaultKeybindings")
-	PawnSetDefaultKeybindings()
-
-	-- print("PawnInitialize: before PawnUI_InventoryPawnButton_Move")
-	PawnUI_InventoryPawnButton_Move()
 
 	-- Check the user's current locale, and show a message if it isn't the right one for this version of Pawn.
 	local CurrentLocale = GetLocale()
@@ -519,9 +499,7 @@ function PawnInitialize()
 	end
 
 	-- We're now effectively initialized.  Just the last steps of scale initialization remain.
-	-- print("PawnInitialize: about to set PawnIsInitialized=true")
 	PawnIsInitialized = true
-	-- print("PawnInitialize: PawnIsInitialized now", tostring(PawnIsInitialized))
 
 	-- If any of our dependencies have already loaded, pretend that they just loaded now.
 	if C_AddOns.IsAddOnLoaded("Blizzard_ArtifactUI") then PawnOnAddonLoaded("Blizzard_ArtifactUI") end
@@ -555,8 +533,6 @@ function PawnInitialize()
 	for ScaleName, _ in pairs(PawnCommon.Scales) do
 		PawnRecalculateScaleTotal(ScaleName)
 	end
-
-	-- print("PawnInitialize: exit")
 end
 
 function PawnOnLogout()
@@ -6175,17 +6151,10 @@ end
 
 -- Shows or hides the Pawn UI.
 function PawnUIShow()
-	print("PawnUIShow called", "PawnIsInitialized=" .. tostring(PawnIsInitialized), "PawnUIFrame=" .. tostring(PawnUIFrame))
-
-	if not PawnUIFrame then
-		VgerCore.Fail("Pawn UI frame is missing.")
+	if not PawnIsInitialized or not PawnUIFrame then
+		VgerCore.Fail("There was an error loading Pawn and its UI is not ready. /console scriptErrors 1 can help you see why.")
 		return
 	end
-	if not PawnIsInitialized then
-		VgerCore.Fail("Pawn is not initialized yet.")
-		return
-	end
-
 	if PawnUIFrame:IsShown() then
 		PawnUIFrame:Hide()
 	else

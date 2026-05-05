@@ -2807,66 +2807,52 @@ end
 
 -- Switches to a tab and shows the Pawn UI if not already visible.
 -- If Toggle is true, close the Pawn UI if it was already visible on that page.
-function PawnUIShow()
-	if not PawnIsInitialized or not PawnUIFrame then
-		VgerCore.Fail("There was an error loading Pawn and its UI is not ready. /console scriptErrors 1 can help you see why.")
-		return
-	end
-
-	if PawnUIFrame:IsShown() then
-		PawnUIFrame:Hide()
+function PawnUIShowTab(Tab, Toggle)
+	if not PawnUIFrame:IsShown() then
+		PawnUIShow()
+		PawnUISwitchToTab(Tab)
+	elseif not Tab:IsShown() then
+		PlaySound(SOUNDKIT.IG_CHARACTER_INFO_TAB)
+		PawnUISwitchToTab(Tab)
 	else
-		PawnUIFrame:Show()
+		if Toggle then
+			PawnUIShow()
+		else
+			PlaySound(SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON)
+		end
 	end
 end
 
 -- Makes sure that all first-open initialization has been performed.
 function PawnUI_EnsureLoaded()
-
 	if not PawnUIOpenedYet then
 		PawnUIOpenedYet = true
-		-- PawnTrace("First open path")
 		StandardGemsUnavailable = not not (VgerCore.IsClassic or (PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()))
-		-- PawnTrace("StandardGemsUnavailable=" .. tostring(StandardGemsUnavailable))
-
 		PawnUIFrame_ScaleSelector_Refresh()
-		-- PawnTrace("After PawnUIFrame_ScaleSelector_Refresh")
-
 		PawnUIFrame_ShowScaleCheck_Label:SetText(format(PawnUIFrame_ShowScaleCheck_Label_Text, UnitName("player")))
-		-- PawnTrace("After setting ShowScale label")
-
 		if StandardGemsUnavailable then
-			-- PawnTrace("Hiding gem-related controls")
+			-- WoW Classic Era doesn't have gems.
+			-- Timerunning season 1 (Mists of Pandaria Remix) didn't use standard gems, though future seasons may.
 			PawnUIFrameTab4:Hide()
 			PawnUIFrame_IgnoreGemsWhileLevelingCheck:Hide()
 			PawnUIFrame_ShowSocketingAdvisorCheck:Hide()
 		end
-
 		if not VgerCore.HasSpecs then
-			-- PawnTrace("Hiding spec icon check")
 			PawnUIFrame_ShowSpecIconsCheck:Hide()
 		end
-
 		if not VgerCore.ReforgingExists then
-			-- PawnTrace("Hiding reforging advisor check")
 			PawnUIFrame_ShowReforgingAdvisorCheck:Hide()
 		end
-
 		if not PawnCommon then
-			-- PawnTrace("PawnCommon missing; switching to help tab")
 			VgerCore.Fail("Pawn UI OnShow handler was called before PawnCommon was initialized.")
 			PawnUISwitchToTab(PawnUIHelpTabPage)
 		elseif not PawnCommon.ShownGettingStarted then
-			-- PawnTrace("First-time user path; switching to help tab")
 			PawnCommon.ShownGettingStarted = true
 			PawnUISwitchToTab(PawnUIHelpTabPage)
 		else
-			-- PawnTrace("Normal path; switching to compare tab")
 			PawnUISwitchToTab(PawnUICompareTabPage)
 		end
 	end
-
-	-- PawnTrace("PawnUI_EnsureLoaded exit")
 end
 
 -- Shows a tooltip for a given control if available.
